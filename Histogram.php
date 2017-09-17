@@ -9,12 +9,22 @@ class Histogram {
      * @return array
      */
     public function getCandidates() {
-        $candidateMasterData = file(__DIR__ . '/datasrc/cn.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         $candidates = [];
-        foreach ($candidateMasterData as $line) {
-            $data = explode("|", $line);
-            $candidates[$data[0]] = $data[1];
+
+        $fname = "datasrc/cn.txt";
+        $handle = fopen($fname, "r") or die("Couldn't get handle");
+
+        if ($handle) {
+            while (!feof($handle)) {
+                $line = fgets($handle, 4096);
+                if ($line):
+                    $data = explode("|", $line);
+                    $candidates[$data[0]] = $data[1];
+                endif;
+            }
+            fclose($handle);
         }
+
         arsort($candidates); /* Sorting array */
         return $candidates;
     }
@@ -41,21 +51,27 @@ class Histogram {
         if (is_null($cand_id)) {
             return $contributions;
         }
-        //reading the file to find out the contribution
-        $contributionsData = file(__DIR__ . '/datasrc/itpas2.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-        foreach ($contributionsData as $line) {
-            $data = explode("|", $line);
+        $fname = "datasrc/itpas2.txt";
+        $handle = fopen($fname, "r") or die("Couldn't get handle");
 
-            if ($data[16] !== $cand_id) {
-                continue;
+        if ($handle) {
+            while (!feof($handle)) {
+                $line = fgets($handle, 4096);
+                if ($line):
+                    $data = explode("|", $line);
+                    if ($data[16] !== $cand_id) {
+                        continue;
+                    }
+                    if (isset($contributions[$data[14]])) {
+                        $contributions[$data[14]] ++;
+                    } else {
+                        $contributions[$data[14]] = 1;
+                    }
+                endif;
             }
 
-            if (isset($contributions[$data[14]])) {
-                $contributions[$data[14]] ++;
-            } else {
-                $contributions[$data[14]] = 1;
-            }
+            fclose($handle);
         }
 
         return $contributions;
