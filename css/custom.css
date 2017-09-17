@@ -1,0 +1,35 @@
+ #container {
+            max-width: 800px;
+            height: 400px;
+            margin: 1em auto;
+        }
+        .cand{
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* The alert message box */
+        .alert {
+            padding: 20px;
+            background-color: #6c89f9;
+            color: white;
+            margin: 15px auto;
+            width: 50%;
+        }
+
+        /* The close button */
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* When moving the mouse over the close button */
+        .closebtn:hover {
+            color: black;
+        }
